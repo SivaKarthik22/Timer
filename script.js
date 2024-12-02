@@ -18,6 +18,10 @@ startBtn.addEventListener("click", ()=>{
         clearInterval(intervalId);
         intervalId = null;
         startBtn.innerText = "Play";
+
+        hours.classList.add("freeze");
+        minutes.classList.add("freeze");
+        seconds.classList.add("freeze");
     }
 
     else{
@@ -39,17 +43,31 @@ startBtn.addEventListener("click", ()=>{
         //for both start and play functionality
         intervalId = setInterval(timer, 1000);
         startBtn.innerText = "Pause";
+
+        hours.classList.remove("freeze");
+        minutes.classList.remove("freeze");
+        seconds.classList.remove("freeze");
     }
 });
 
 resetBtn.addEventListener("click", ()=>{
     if(!givenTime)
         return;
-    totalSecs = givenTime;
-    barValue = 100;
-    clearInterval(intervalId);
-    intervalId = null;
-    updateTimerUI();
+
+    if(totalSecs === givenTime){
+        givenTime = undefined;
+        totalSecs = undefined;
+        barValue = 0;
+        clearInputField();
+        resetBtn.style.display = "none";
+    }
+    else{
+        totalSecs = givenTime;
+        barValue = 100;
+        clearInterval(intervalId);
+        intervalId = null;
+        updateTimerUI();
+    }
     enableInput();
 });
 
@@ -140,4 +158,5 @@ function clearInputField(){
     hours.value = '';
     minutes.value = '';
     seconds.value = '';
+    progressBar.style.width = 0;
 }
